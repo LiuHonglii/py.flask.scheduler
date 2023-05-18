@@ -1,0 +1,8 @@
+/.idea/
+**/__pycache__/
+/conf/local_setting.py
+*.lock
+**/*.log
+/.vscode/
+/migrations/
+/.env

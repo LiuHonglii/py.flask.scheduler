@@ -1,0 +1,11 @@
+flask==2.3.2
+Jinja2==3.1.2
+Werkzeug==2.3.4
+python-dotenv==1.0.0
+psycopg2==2.9.6
+Flask-SQLAlchemy==3.0.3
+SQLAlchemy==2.0.13
+Flask-Migrate==4.0.4
+Flask-APScheduler==1.12.4
+apscheduler==3.10.1
+Flask-Cors==3.0.10
