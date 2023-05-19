@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from flask import Flask
+from .exts import Flask
 from conf.setting import config_dict
 from application.views import register_blueprint
 

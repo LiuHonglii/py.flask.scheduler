@@ -6,7 +6,7 @@ from application.models import ApschedulerJobs
 
 
 
-def test_job():
+def get_all_jobs():
     """
     测试job
     """

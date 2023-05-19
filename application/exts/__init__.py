@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask
+from .app import Flask
 from .scheduler import custom_scheduler
 
 

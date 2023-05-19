@@ -2,10 +2,11 @@
 import dataclasses
 import typing as t
 import uuid
-
+from flask import current_app
 from flask.json.provider import DefaultJSONProvider as _DefaultJSONProvider
 import decimal
 from datetime import date, datetime
+
 
 def _default(o: t.Any) -> t.Any:
     if o is None:
@@ -28,9 +29,12 @@ def _default(o: t.Any) -> t.Any:
 
     raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
 
-class DefaultJSONProvider(_DefaultJSONProvider):
 
+class DefaultJSONProvider(_DefaultJSONProvider):
     default: t.Callable[[t.Any], t.Any] = staticmethod(
         _default
     )  # type: ignore[assignment]
 
+    ensure_ascii = False
+
+    sort_keys = False
