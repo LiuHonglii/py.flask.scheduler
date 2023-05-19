@@ -14,7 +14,7 @@ class Config(SchedulerConfig):
 
     # flask-sqlalchemy使用的参数
     # 默认数据库
-    SQLALCHEMY_DATABASE_URI = f'postgresql://postgres:postgres@127.0.0.1:5432/py.flask.scheduler'  # 数据库
+    SQLALCHEMY_DATABASE_URI = f'postgresql://postgres:postgres@172.16.80.121:5432/py.flask.scheduler'  # 数据库
     SQLALCHEMY_POOL_SIZE = 10
     SQLALCHEMY_POOL_RECYCLE = 7200
     SQLALCHEMY_MAX_OVERFLOW = 15

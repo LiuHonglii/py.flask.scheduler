@@ -12,7 +12,7 @@ def create_app():
     :return: app
     """
     BASE_DIR = Path(__file__).parent.parent
-    app = Flask(__name__, root_path=f'{BASE_DIR}')
+    app = Flask('py.flask.scheduler', root_path=f'{BASE_DIR}')
 
     config_name = os.getenv('FLASK_ENV', 'development')
 
