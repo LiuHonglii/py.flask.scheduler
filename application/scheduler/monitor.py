@@ -13,6 +13,7 @@ from apscheduler.events import (EVENT_JOB_ERROR,
                                 EVENT_JOB_MODIFIED,
                                 EVENT_JOB_EXECUTED,
                                 EVENT_JOB_SUBMITTED)
+from application.common import CustomError
 
 LOGGER = logging.getLogger('flask_apscheduler')
 
@@ -175,7 +176,7 @@ def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
                     else:
                         LOGGER.warning("指定的job本地不存在{}".format(job_id))
             except:
-                LOGGER.exception("执行任务异常")
+                raise CustomError('执行任务异常')
 
 
 # 添加事件监听

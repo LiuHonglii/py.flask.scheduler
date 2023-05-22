@@ -23,3 +23,7 @@ def get_all_jobs():
 
         # 此处无法写入日志原因：不存在请求上下文所导致
         # custom_scheduler.app.logger.info(f"test_job")
+
+
+def get_current_datetime():
+    print(f'当前时间：{datetime.now()}')
