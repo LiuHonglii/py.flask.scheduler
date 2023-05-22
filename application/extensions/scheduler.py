@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import atexit
+import os
 import platform
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from flask_apscheduler import APScheduler
@@ -11,8 +12,10 @@ class SchedulerConfig():
     # 线程池配置，最大20个线程
     SCHEDULER_EXECUTORS = {'default': {'type': 'threadpool', 'max_workers': 10}}
     # 持久化存储
-    SCHEDULER_SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@172.16.80.121:5432/py.flask.scheduler'
-    SCHEDULER_JOBSTORES = {"default": SQLAlchemyJobStore(url=SCHEDULER_SQLALCHEMY_DATABASE_URI)}
+    SCHEDULER_SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI') or 'postgresql://postgres:postgres@127.0.0.1:5432/py.flask.scheduler'
+    SCHEDULER_JOBSTORES = {
+        "default": SQLAlchemyJobStore(url=SCHEDULER_SQLALCHEMY_DATABASE_URI)
+    }
     # 配置允许执行定时任务的主机名
     SCHEDULER_ALLOWED_HOSTS = ['*']
     # 调度开关开启
@@ -40,6 +43,7 @@ class CustomAPScheduler(APScheduler):
         super(CustomAPScheduler, self).init_app(app)
         # 启动定时任务服务
         self.start()
+        from application.scheduler import monitor  # noqa: F401
         click.echo(' * Scheduler Started ---------------')
 
     def _load_lock(self):

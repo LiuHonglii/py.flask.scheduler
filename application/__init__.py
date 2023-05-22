@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from .exts import Flask
+from .extensions import Flask
 from conf.setting import config_dict
 from application.views import register_blueprint
 
@@ -22,11 +22,11 @@ def create_app():
     init_common(app)
 
     # 命令行命令添加
-    # from .commands import init_commands
-    # init_commands(app)
+    from .commands import init_commands
+    init_commands(app)
 
     # 扩展初始化
-    from .exts import init_ext
+    from .extensions import init_ext
     init_ext(app)
 
     # 注册蓝图

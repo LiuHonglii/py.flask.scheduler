@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# gevent==21.12.0
 import multiprocessing
 from gevent import monkey
 
@@ -9,7 +8,8 @@ gunicorn_log_file_path = '/tmp'
 
 wsgi_app = 'wsgi:app'
 
-# 避免定时任务重复执行 此方案不佳
+# 避免定时任务重复执行
+# 这样在启动 worker 进程之前，会先加载 app，然后再 fork 出子进程，这样就可以保证只有一个 scheduler 对象
 preload_app = True
 
 # 并行工作进程数
@@ -18,7 +18,7 @@ workers = 4 if (multiprocessing.cpu_count() * 2 + 1) <= 6 else 6
 
 debug = False
 
-reload = False  # 自动重新加载
+reload = True  # 自动重新加载
 
 loglevel = 'info'
 
