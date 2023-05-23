@@ -46,15 +46,19 @@ class CustomAPScheduler(APScheduler):
 
         # 方式一
         self._socket_lock()
+        # 方式二
+        # self._load_lock()
 
     def init_start(self):
         """启动定时任务服务"""
         self.start()
         click.echo(' * Scheduler Started ---------------')
 
-
     def _socket_lock(self):
-        """借助套接字限制启动数量 在init_app中调用"""
+        """
+        借助套接字限制启动数量 会占用掉一个端口
+        在init_app中调用
+        """
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.bind(("127.0.0.1", 47200))
@@ -76,10 +80,7 @@ class CustomAPScheduler(APScheduler):
             f = open('./aps.lock', 'wb')
             try:
                 fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
-                self.start()
-                print(' * Scheduler Started,---------------')
-                from application.scheduler import monitor
-                from application.scheduler import jobs
+                self.init_start()
             except:
                 pass
 
@@ -94,10 +95,7 @@ class CustomAPScheduler(APScheduler):
             f = open('scheduler.lock', 'wb')
             try:
                 msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
-                self.start()
-                print(' * Scheduler Started In Window,---------------')
-                # from application.scheduler import monitor
-                # from application.scheduler import jobs
+                self.init_start()
             except:
                 pass
 

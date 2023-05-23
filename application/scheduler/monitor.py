@@ -55,11 +55,11 @@ def listener_all_job(event):
         'event_type': event.code,
         'job_traceback': event.traceback if hasattr(event, 'traceback') else "",
     }
-    # handle_listener_all_job(**kw)
+    handle_listener_all_job(**kw)
 
-    t = threading.Thread(target=handle_listener_all_job, kwargs=kw)
-    t.start()
-    t.join()
+    # t = threading.Thread(target=handle_listener_all_job, kwargs=kw)
+    # t.start()
+    # t.join()
 
 
 def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
