@@ -35,7 +35,7 @@ flask db upgrade
 flask run -h 0.0.0.0 -p {port}
 ```
 
-### Docker 部署
+### 二、Docker 部署
 
 ##### 一、获取docker镜像
 
