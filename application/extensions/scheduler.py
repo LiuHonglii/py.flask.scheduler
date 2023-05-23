@@ -29,6 +29,40 @@ class SchedulerConfig():
     # 序列化输出样式
     JSONIFY_PRETTYPRINT_REGULAR = True
 
+    SCHEDULER_JOBS = [
+        {
+            "id": "id_get_all_jobs",
+            "name": "获取所有任务",
+            "func": "application:scheduler.jobs.get_all_jobs",
+            "trigger": "interval",
+            "seconds": 10,
+            "replace_existing": True
+        },
+        {
+            "id": "id_get_current_datetime",
+            "name": "获取当前时间",
+            "func": "application:scheduler.jobs.get_current_datetime",
+            "trigger": "interval",
+            "kwargs": {
+                "name": "用户名称"
+            },
+            "seconds": 5,
+            "replace_existing": True
+        },
+        {
+            "id": "id_get_summation",
+            "name": "求和",
+            "func": "application:scheduler.jobs.get_summation",
+            "trigger": "interval",
+            "args": [
+                4,
+                5
+            ],
+            "seconds": 20,
+            "replace_existing": True
+        }
+    ]
+
 
 class CustomAPScheduler(APScheduler):
 

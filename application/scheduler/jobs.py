@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from flask import current_app
 from datetime import datetime
 from application.extensions.scheduler import custom_scheduler
-from application.models import ApschedulerJobs
+from pprint import pprint
 
 
 def get_all_jobs():
@@ -18,11 +17,21 @@ def get_all_jobs():
                 'next_run_time': ele.next_run_time.strftime('%Y-%m-%d %H:%M:%S'),
             })
 
-        print(jobs_list)
+        pprint(jobs_list)
 
         # 此处无法写入日志原因：不存在请求上下文所导致
         # custom_scheduler.app.logger.info(f"test_job")
 
 
 def get_current_datetime(*args, **kwargs):
-    print(f'当前时间：{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}', (args))
+    print(f'当前时间：{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}', (kwargs))
+
+
+def get_summation(*args, **kwargs):
+    """
+    求和
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    print(f"求和结果:{sum(args)}")
