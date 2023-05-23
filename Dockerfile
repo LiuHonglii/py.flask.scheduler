@@ -8,7 +8,7 @@ RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >/etc/timezone
 
 RUN mkdir -p /py.flask.scheduler
 
-COPY. /var/www/py.flask.scheduler/
+COPY . /var/www/py.flask.scheduler/
 
 WORKDIR /var/www/py.flask.scheduler/
 
