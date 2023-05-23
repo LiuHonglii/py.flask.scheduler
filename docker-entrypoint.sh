@@ -18,4 +18,5 @@ pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 # 初始化数据
 #flask init-db
 
-gunicorn -c gconfig.py -b 0.0.0.0:41003
+#gunicorn -c gconfig.py -b 0.0.0.0:41003
+flask run -h 0.0.0.0 -p 41003
