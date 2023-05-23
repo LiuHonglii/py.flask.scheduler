@@ -8,7 +8,7 @@ from apscheduler.events import (
     EVENT_JOB_SUBMITTED,
 )
 
-from application.extensions import custom_scheduler
+from application.extensions.scheduler import custom_scheduler
 
 
 def job_missed(event):
