@@ -2,6 +2,7 @@
 import atexit
 import os
 import platform
+import socket
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from flask_apscheduler import APScheduler
 import click
@@ -41,15 +42,32 @@ class CustomAPScheduler(APScheduler):
         :return:
         """
         super(CustomAPScheduler, self).init_app(app)
-        # 启动定时任务服务
-        self.start()
         from application.scheduler import monitor  # noqa: F401
+
+        # 方式一
+        self._socket_lock()
+
+    def init_start(self):
+        """启动定时任务服务"""
+        self.start()
         click.echo(' * Scheduler Started ---------------')
+
+
+    def _socket_lock(self):
+        """借助套接字限制启动数量 在init_app中调用"""
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.bind(("127.0.0.1", 47200))
+        except socket.error:
+            pass
+        else:
+            self.init_start()
 
     def _load_lock(self):
         """
         文件锁形式 防止创建多个apscheduler任务实例
         存在问题：导致无法动态添加或变更任务
+        在init_app中调用
         :return:
         """
         if platform.system() != 'Windows':

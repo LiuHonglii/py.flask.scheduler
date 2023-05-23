@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import current_app
 from datetime import datetime
-from application.extensions import custom_scheduler
+from application.extensions.scheduler import custom_scheduler
 from application.models import ApschedulerJobs
 
 

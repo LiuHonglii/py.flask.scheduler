@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from .app import Flask
-from .scheduler import custom_scheduler
 
 
 def init_ext(app: Flask):
@@ -22,4 +21,5 @@ def init_ext(app: Flask):
     cors.init_app(app)
 
     # 定时任务初始化
+    from .scheduler import custom_scheduler
     custom_scheduler.init_app(app)

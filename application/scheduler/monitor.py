@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import threading
-from application.extensions import custom_scheduler
+from application.extensions.scheduler import custom_scheduler
 from application.models import ApschedulerJobInfo, db
 from application.models import ApschedulerJobEvent
 from apscheduler.events import (EVENT_JOB_ERROR,
@@ -55,17 +55,17 @@ def listener_all_job(event):
         'event_type': event.code,
         'job_traceback': event.traceback if hasattr(event, 'traceback') else "",
     }
-    handle_listener_all_job(**kw)
+    # handle_listener_all_job(**kw)
 
-    # t = threading.Thread(target=handle_listener_all_job, kwargs=kw)
-    # t.start()
-    # t.join()
+    t = threading.Thread(target=handle_listener_all_job, kwargs=kw)
+    t.start()
+    t.join()
 
 
 def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
     """
     实际处理IO操作
-    如何处理一个job_id重复使用的问题，采用本地id自增，如果真有job_id重复的情况，则认为指定的是最后一个job_id对应的任务
+    如何处理一个job_id重复使用的问题，采用本地id自增，如果真有job_id重复的情况，则认f为{ApschedulerJobEvent.EVENT_MAPPING[STATUS_MAPPING[event_type]]} 指定的是最后一个job_id对应的任务
     """
     with custom_scheduler.app.app_context():
         with db.auto_commit():
@@ -91,7 +91,7 @@ def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
                         job_event = ApschedulerJobEvent(job_info_id=job.id, event=STATUS_MAPPING[event_type])
                         db.session.add(job_event)
                     else:
-                        LOGGER.warning("指定的job本地不存在{}".format(job_id))
+                        LOGGER.warning(f"{ApschedulerJobEvent.EVENT_MAPPING[STATUS_MAPPING[event_type]]} 指定的job本地不存在{job_id}")
                 elif event_type == EVENT_JOB_SUBMITTED:
                     # 提交job执行
                     job = ApschedulerJobInfo.query.order_by(ApschedulerJobInfo.id.desc()).filter(
@@ -101,7 +101,7 @@ def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
                         job_event = ApschedulerJobEvent(job_info_id=job.id, event=STATUS_MAPPING[event_type])
                         db.session.add(job_event)
                     else:
-                        LOGGER.warning("指定的job本地不存在{}".format(job_id))
+                        LOGGER.warning(f"{ApschedulerJobEvent.EVENT_MAPPING[STATUS_MAPPING[event_type]]} 指定的job本地不存在{job_id}")
                 elif event_type == EVENT_JOB_EXECUTED:
                     # 执行job
                     job = ApschedulerJobInfo.query.order_by(ApschedulerJobInfo.id.desc()).filter(
@@ -114,7 +114,7 @@ def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
                         job_event = ApschedulerJobEvent(job_info_id=job.id, event=STATUS_MAPPING[event_type])
                         db.session.add(job_event)
                     else:
-                        LOGGER.warning("指定的job本地不存在 {}".format(job_id))
+                        LOGGER.warning(f"{ApschedulerJobEvent.EVENT_MAPPING[STATUS_MAPPING[event_type]]} 指定的job本地不存在 {job_id}")
                 elif event_type == EVENT_JOB_REMOVED:
                     # 删除job
                     job = ApschedulerJobInfo.query.order_by(ApschedulerJobInfo.id.desc()).filter(
@@ -127,7 +127,7 @@ def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
                         job_event = ApschedulerJobEvent(job_info_id=job.id, event=STATUS_MAPPING[event_type])
                         db.session.add(job_event)
                     else:
-                        LOGGER.warning("指定的job本地不存在{}".format(job_id))
+                        LOGGER.warning(f"{ApschedulerJobEvent.EVENT_MAPPING[STATUS_MAPPING[event_type]]} 指定的job本地不存在{job_id}")
                 elif event_type == EVENT_JOB_ERROR:
                     # 执行job出错
                     job = ApschedulerJobInfo.query.order_by(ApschedulerJobInfo.id.desc()).filter(
@@ -140,7 +140,7 @@ def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
                         job_event = ApschedulerJobEvent(job_info_id=job.id, event=STATUS_MAPPING[event_type])
                         db.session.add(job_event)
                     else:
-                        LOGGER.warning("指定的job本地不存在{}".format(job_id))
+                        LOGGER.warning(f"{ApschedulerJobEvent.EVENT_MAPPING[STATUS_MAPPING[event_type]]} 指定的job本地不存在{job_id}")
                 elif event_type == EVENT_JOB_MISSED:
                     # job执行错过
                     job = ApschedulerJobInfo.query.order_by(ApschedulerJobInfo.id.desc()).filter(
@@ -153,7 +153,7 @@ def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
                         job_event = ApschedulerJobEvent(job_info_id=job.id, event=STATUS_MAPPING[event_type])
                         db.session.add(job_event)
                     else:
-                        LOGGER.warning("指定的job本地不存在{}".format(job_id))
+                        LOGGER.warning(f"{ApschedulerJobEvent.EVENT_MAPPING[STATUS_MAPPING[event_type]]} 指定的job本地不存在{job_id}")
                 elif event_type == EVENT_ALL_JOBS_REMOVED:
                     # 删除所有job
                     all_jobs = ApschedulerJobInfo.query.filter(ApschedulerJobInfo.job_status == 0).all()
@@ -174,7 +174,7 @@ def handle_listener_all_job(event_type, job_id, job_traceback='', **kwargs):
                         job_event = ApschedulerJobEvent(job_info_id=job.id, event=STATUS_MAPPING[event_type])
                         db.session.add(job_event)
                     else:
-                        LOGGER.warning("指定的job本地不存在{}".format(job_id))
+                        LOGGER.warning(f"{ApschedulerJobEvent.EVENT_MAPPING[STATUS_MAPPING[event_type]]} 指定的job本地不存在{job_id}")
             except:
                 raise CustomError('执行任务异常')
 

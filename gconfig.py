@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import multiprocessing
 from gevent import monkey
+from dotenv import load_dotenv
+
+# 加载环境变量
+load_dotenv()
 
 monkey.patch_all()
 
@@ -14,7 +18,7 @@ preload_app = True
 
 # 并行工作进程数
 # workers = multiprocessing.cpu_count() * 2 + 1
-workers = 4 if (multiprocessing.cpu_count() * 2 + 1) <= 6 else 6
+workers = 4
 
 debug = False
 
