@@ -6,6 +6,7 @@ import socket
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from flask_apscheduler import APScheduler
 import click
+from blinker import signal
 
 
 # 定时器配置项
@@ -85,7 +86,7 @@ class CustomAPScheduler(APScheduler):
 
     def init_start(self):
         """启动定时任务服务"""
-        self.start()
+        self.start(paused=True)
         click.echo(' * Scheduler Started ---------------')
 
     def _socket_lock(self):
@@ -142,5 +143,14 @@ class CustomAPScheduler(APScheduler):
 
             atexit.register(_unlock_file)
 
+    def _resume_signal(self, sender, **kwargs):
+        """任务恢复信号"""
+        self.resume()
+
 
 custom_scheduler = CustomAPScheduler()
+
+# 任务恢复信号
+resume_signal = signal("resume_signal")
+
+resume_signal.connect(custom_scheduler._resume_signal)

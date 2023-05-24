@@ -4,6 +4,7 @@ from pathlib import Path
 from .extensions import Flask
 from conf.setting import config_dict
 from application.views import register_blueprint
+from .extensions.scheduler import resume_signal
 
 
 def create_app():
@@ -32,5 +33,8 @@ def create_app():
 
     # 注册蓝图
     register_blueprint(app)
+
+    # 任务恢复信号
+    resume_signal.send(app)
 
     return app
