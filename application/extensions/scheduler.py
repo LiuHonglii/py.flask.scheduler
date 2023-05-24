@@ -89,6 +89,10 @@ class CustomAPScheduler(APScheduler):
         self.start(paused=True)
         click.echo(' * Scheduler Started ---------------')
 
+    def _resume_signal(self, sender, **kwargs):
+        """任务恢复信号"""
+        self.resume()
+
     def _socket_lock(self):
         """
         借助套接字限制启动数量 会占用掉一个端口
@@ -142,10 +146,6 @@ class CustomAPScheduler(APScheduler):
                     pass
 
             atexit.register(_unlock_file)
-
-    def _resume_signal(self, sender, **kwargs):
-        """任务恢复信号"""
-        self.resume()
 
 
 custom_scheduler = CustomAPScheduler()

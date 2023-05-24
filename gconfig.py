@@ -14,7 +14,7 @@ wsgi_app = 'wsgi:app'
 
 # 避免定时任务重复执行
 # 这样在启动 worker 进程之前，会先加载 app，然后再 fork 出子进程，这样就可以保证只有一个 scheduler 对象
-preload_app = True
+# preload_app = True
 
 # 并行工作进程数
 # workers = multiprocessing.cpu_count() * 2 + 1

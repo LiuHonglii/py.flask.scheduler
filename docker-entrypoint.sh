@@ -17,6 +17,6 @@ flask db upgrade
 #flask init-dict
 # 初始化数据
 #flask init-db
-
-#gunicorn -c gconfig.py -b 0.0.0.0:41003
+# gunicorn 启动存在异常，未解决
+#gunicorn -c gconfig.py -b 0.0.0.0:41003 --preload
 flask run -h 0.0.0.0 -p 41003
